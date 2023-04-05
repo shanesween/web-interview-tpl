@@ -39,9 +39,10 @@ const DEFAULT_RESULT_CREATOR = 'events'
 
 /**
  * @mapResults
- * @param items - array of search results
  * A function that maps over an array of items and uses the resultCreators
  * functions to create results objects based on the item's meta.display_group.
+ * 
+ * @param items - array of search results
  * 
  * @returns array of non-null objects
  */
@@ -54,12 +55,13 @@ const mapResults = (items) => (
 
 /**
  * @sortResults
- * @param data 
- * A function takes in an object of search results from the API fetchSearch
- * and sorts them based on their display groups, with a maximum of 3 results per group.
- * Top picks are extrapolated from the other group types (venues, performers, events). 
- * The sorted results are then returned as an array of objects, each containing information
- * about the search result. 
+ * A helper function that takes in an object of search results from the API fetchSearch
+ * and gets the sorted order of display groups. Then, the array of display groups is looped through 
+ * with a maximum of 3 results per group being added to the final array. The function also extrapolates
+ * top picks from the other group types (venues, performers, events) and adds them to the top pick group.
+ * The sorted results are then returned as an array of objects, each containing information about the search result. 
+ * 
+ * @param data An object returned from the API query.
  * 
  * @returns An array of objects containing information about the search results, 
  * sorted by display groups with a maximum of 3 results per group.
@@ -76,6 +78,7 @@ export const sortResults = (data) => {
       const topPicks = results?.filter(item => item?.meta?.display_group === TOP_PICK)
       groupItems = topPicks?.slice(0, 3) || [];
     } else {
+      // TODO: Remove duplicated top pick from groupItem as they will be grouped in line 74-77
       groupItems = data[group.slug]?.slice(0, 3) || [];
     }
     
