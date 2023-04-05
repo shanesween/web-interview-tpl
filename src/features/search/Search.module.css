@@ -1,0 +1,47 @@
+  .box {
+    text-align: left;
+    margin: 3px;
+    width: 20rem;
+    padding-left: 10px;
+    display: flex;
+  }
+
+  .moduleContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    border: gray ridge 1px;
+    border-radius: 10px;
+    margin: 3px;
+    width: 20rem;
+    padding-left: 10px;
+  }
+
+  .imageContainer {
+    align-self: center;
+  }
+
+
+  .input-container {
+    position: relative;
+    border: gray ridge 1px;
+    border-radius: 8px;
+    padding: 0 12px;
+  }
+
+  .input-container .icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    /* adjust the value based on the input padding */
+    transform: translateY(-50%);
+  }
+
+  .input {
+    border: none;
+    width: 100%;
+  }
