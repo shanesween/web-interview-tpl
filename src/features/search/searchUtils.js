@@ -10,7 +10,7 @@ const resultCreators = {
   events: (item) => {
     const performer = item.performers.find(p => p.primary) || item.performers[0];
     return {
-      id: item.id,
+      id: item.event.id,
       image: performer.hero_image_url,
       title: item.event.name,
       subtitle: item.venue.name
