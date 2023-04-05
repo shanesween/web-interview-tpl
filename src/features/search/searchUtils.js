@@ -42,13 +42,16 @@ export const sortResults = (data) => {
   let items = [];
 
   groups.forEach(group => {
+    let groupItems = [];
     if (group.slug === TOP_PICK) {
       const results = Object.values(groupTypes).flat();
       const topPicks = results?.filter(item => item?.meta?.display_group === TOP_PICK)
-      items = [...items, ...topPicks]
+      groupItems = topPicks?.slice(0, 3) || [];
     } else {
-      items = [...items, ...data[group.slug]]
+      groupItems = data[group.slug]?.slice(0, 3) || [];
     }
+    
+    items = [...items, ...groupItems];
   });
 
   const results = mapResults(items)
