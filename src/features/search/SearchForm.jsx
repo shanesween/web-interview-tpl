@@ -6,12 +6,13 @@ const SearchForm = ({handleSearch}) => {
 
   return (
     <div className="input-container">
-     <span>
-     <BsSearch className="icon" />
-      </span> 
+      <span>
+        <BsSearch className="icon" />
+      </span>
       <input
         type="text"
         name="search"
+        className="input"
         onChange={event => handleSearch(event.target.value)}
       />
     </div>
