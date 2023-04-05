@@ -1,34 +1,8 @@
-export function formatEventData(data) {
-  return data.results.map(result => ({
-    id: result.id,
-    image: result.performers && result.performers.length > 0 ? result.performers[0].images.small : '',
-    title: result.name,
-    subtitle: result.venue ? result.venue.name : ''
-  }));
-}
-
-export function formatPerformerData(data) {
-  return data.results.map(result => ({
-    id: result.id,
-    image: result.images && result.images.small,
-    title: result.name,
-    subtitle: result.category
-  }));
-}
-
-export function formatVenueData(data) {
-  return data.results.map(result => ({
-    id: result.id,
-    image: result.images && result.images.small,
-    title: result.name,
-    subtitle: result.city
-  }));
-}
-
 const resultCreators = {
   events: (item) => {
     const performer = item.performers.find(p => p.primary) || item.performers[0];
     return {
+      id: item.id,
       image: performer.hero_image_url,
       title: item.event.name,
       subtitle: item.venue.name
@@ -36,6 +10,7 @@ const resultCreators = {
   },
   venues: (item) => {
     return {
+      id: item.id,
       image: item.image_url,
       title: item.name,
       subtitle: item.city
@@ -43,6 +18,7 @@ const resultCreators = {
   },
   performers: (item) => {
     return {
+      id: item.id,
       image: item.hero_image_url,
       title: item.name,
       subtitle: item.category
@@ -50,28 +26,32 @@ const resultCreators = {
   }
 };
 
-export function sortResults(data) {
-  const {display_groups, ...resultss} = data 
-  const groups = [...display_groups].sort((a, b) => {
-    return a.sort_order - b.sort_order;
-  });
+const TOP_PICK = 'top_pick'
+const DEFAULT_RESULT_CREATOR = 'events'
+
+const mapResults = (items) => (
+ items.map(item => {
+    const resultCreator = resultCreators[item?.meta?.display_group] || resultCreators[DEFAULT_RESULT_CREATOR];
+    return resultCreator ? resultCreator(item) : null;
+  }).filter(Boolean)
+)
+
+export const sortResults = (data) => {
+  const {display_groups: groups, ...groupTypes} = data
 
   let items = [];
+
   groups.forEach(group => {
-  if (group.slug === 'top_pick') {
-      const results = Object.values(resultss).flat();
-      const topPicks = results?.filter(item =>  item?.meta?.display_group === 'top_pick')
-       items = [...items, ...topPicks]
-       
-  } else {
-    items = [...items, ...data[group.slug]]
-  }
+    if (group.slug === TOP_PICK) {
+      const results = Object.values(groupTypes).flat();
+      const topPicks = results?.filter(item => item?.meta?.display_group === TOP_PICK)
+      items = [...items, ...topPicks]
+    } else {
+      items = [...items, ...data[group.slug]]
+    }
   });
 
-  const results = items.map(item => {
-    const resultCreator = resultCreators[item?.meta?.display_group] || resultCreators['events'];
-    return resultCreator ? resultCreator(item) : null;
-  }).filter(Boolean);
-  
+  const results = mapResults(items)
+
   return results;
 }
