@@ -19,7 +19,9 @@ function App() {
         <header className="App-header">
           <img src={header} className="App-logo" alt="logo" />
         </header>
-        <Search />
+        <div className="container">
+          <Search />
+        </div>
       </div>
     </QueryClientProvider>
   );
