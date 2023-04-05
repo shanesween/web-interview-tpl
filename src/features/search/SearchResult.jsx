@@ -1,13 +1,13 @@
 import React from 'react';
 import styles from './Search.module.css';
 
-const SearchResult = ({result, key}) => {
-  const {title, subtitle, image} = result
+const SearchResult = ({result, width = '50'}) => {
+  const {id, title, subtitle, image} = result
 
   return (
-    <div className={styles.box} key={key}>
+    <div className={styles.box} key={id}>
       <div className={styles.imageContainer}>
-        <img width='50' src={image} alt={title} />
+        <img width={width} src={image} alt={title} />
       </div>
       <div>
         <h4>{title}</h4>

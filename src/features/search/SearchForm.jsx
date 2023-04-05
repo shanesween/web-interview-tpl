@@ -1,8 +1,12 @@
 import React from 'react';
+import debounce from 'lodash.debounce';
 import {BsSearch} from 'react-icons/bs';
 
+const SearchForm = ({onSearch}) => {
 
-const SearchForm = ({handleSearch}) => {
+  const handleSearch = debounce(({target: {value}}) => {
+    onSearch(value);
+  }, 500);
 
   return (
     <div className="input-container">
@@ -13,10 +17,10 @@ const SearchForm = ({handleSearch}) => {
         type="text"
         name="search"
         className="input"
-        onChange={event => handleSearch(event.target.value)}
+        onChange={handleSearch}
       />
     </div>
-  );
-}
+  )
+};
 
 export default SearchForm
